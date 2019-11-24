@@ -1,6 +1,5 @@
 #include <iostream>
 #include <map>
-#include<typeinfo>
 using namespace std;
 template<typename U,typename V>
 class Node {
@@ -134,29 +133,43 @@ class LRUCache{
 
 int main()
 {
-  cout<<"Integer"<<endl;
-  LRUCache<int,int> cache(2,-1);
-  cache.put(2,6);
-  cout << cache.get(2) << endl;
-  cout << cache.get(1) << endl;
-  cache.put(1,1);
-  cache.put(1,3);
-  cout << cache.get(1) << endl;
-  cout << cache.get(2) << endl;
-  cache.put(8,9);
-  cout << cache.get(1) << endl;
-  cout << cache.get(8) << endl;
-  cout<<"String"<<endl;
-  LRUCache<string,string> cache2(2,"-1");
-  cache2.put("b","f");
-  cout << cache2.get("b") << endl;
-  cout << cache2.get("a") << endl;
-  cache2.put("a","a");
-  cache2.put("a","c");
-  cout << cache2.get("a") << endl;
-  cout << cache2.get("b") << endl;
-  cache2.put("h","i");
-  cout << cache2.get("a") << endl;
-  cout << cache2.get("h") << endl;
+    cout<<"Integer"<<endl;
+    LRUCache<int,int> cache(2,-1);
+    cache.put(2,6);
+    cout << cache.get(2) << endl;
+    cout << cache.get(1) << endl;
+    cache.put(1,1);
+    cache.put(1,3);
+    cout << cache.get(1) << endl;
+    cout << cache.get(2) << endl;
+    cache.put(8,9);
+    cout << cache.get(1) << endl;
+    cout << cache.get(8) << endl;
+
+    cout<<"String"<<endl;
+    LRUCache<string,string> cache2(2,"-1");
+    cache2.put("b","f");
+    cout << cache2.get("b") << endl;
+    cout << cache2.get("a") << endl;
+    cache2.put("a","a");
+    cache2.put("a","c");
+    cout << cache2.get("a") << endl;
+    cout << cache2.get("b") << endl;
+    cache2.put("h","i");
+    cout << cache2.get("a") << endl;
+    cout << cache2.get("h") << endl;
+
+    cout<<"Character"<<endl;
+    LRUCache<char,char> cache3(2,'-');
+    cache3.put('b','f');
+    cout << cache3.get('b') << endl;
+    cout << cache3.get('a') << endl;
+    cache3.put('a','a');
+    cache3.put('a','c');
+    cout << cache3.get('a') << endl;
+    cout << cache3.get('b') << endl;
+    cache3.put('h','i');
+    cout << cache3.get('a') << endl;
+    cout << cache3.get('h') << endl;
 
 }
