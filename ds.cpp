@@ -1,23 +1,26 @@
 #include <iostream>
 #include <map>
+#include<typeinfo>
 using namespace std;
+template<typename U,typename V>
 class Node {
     public:
-    int key, value;
+    U key;
+    V value;
     Node *prev, *next;
-    Node(int k, int v)
+    Node(U k, V v)
     {
         key=k;
         value=v;
         prev=next=nullptr;
     }
 };
-
+template<typename U,typename V>
 class DoublyLinkedList {
-  Node *front, *rear;
+  Node<U,V> *front, *rear;
 
   bool isEmpty() {
-      return rear == NULL;
+      return rear == nullptr;
   }
 
   public:
@@ -25,8 +28,8 @@ class DoublyLinkedList {
     front=rear=nullptr;
   }
 
-  Node* add_page_to_head(int key, int value) {
-      Node *page = new Node(key, value);
+  Node<U,V>* add_page_to_head(U key, V value) {
+      Node<U,V> *page = new Node<U,V>(key, value);
       if(!front && !rear) {
           front = rear = page;
       }
@@ -38,7 +41,7 @@ class DoublyLinkedList {
       return page;
   }
 
-  void move_page_to_head(Node *page) {
+  void move_page_to_head(Node<U,V> *page) {
       if(page==front) {
           return;
       }
@@ -66,41 +69,43 @@ class DoublyLinkedList {
           front = rear = nullptr;
       }
       else {
-          Node *temp = rear;
+          Node<U,V> *temp = rear;
           rear = rear->prev;
           rear->next = nullptr;
           delete temp;
       }
   }
-  Node* get_rear_page() {
+  Node<U,V>* get_rear_page() {
       return rear;
   }
 
 };
-
+template<typename U,typename V>
 class LRUCache{
   int capacity, size;
-  DoublyLinkedList *pageList;
-  map<int, Node*> pageMap;
+  V notfound;
+  DoublyLinkedList<U,V> *pageList;
+  map<U, Node<U,V>*> pageMap;
 
   public:
-    LRUCache(int c) {
+    LRUCache(int c,V n) {
       this->capacity = c;
+      this->notfound=n;
       size = 0;
-        pageList = new DoublyLinkedList();
-        pageMap = map<int, Node*>();
+        pageList = new DoublyLinkedList<U,V>();
+        pageMap = map<U, Node<U,V>*>();
     }
 
-    int get(int key) {
+    V get(U key) {
         if(pageMap.find(key)==pageMap.end()) {
-          return -1;
+            return notfound;
         }
-        int val = pageMap[key]->value;
+        V val = pageMap[key]->value;
         pageList->move_page_to_head(pageMap[key]);
         return val;
     }
 
-    void put(int key, int value) {
+    void put(U key, V value) {
       if(pageMap.find(key)!=pageMap.end()) {
           pageMap[key]->value = value;
           pageList->move_page_to_head(pageMap[key]);
@@ -108,18 +113,18 @@ class LRUCache{
       }
 
         if(size == capacity) {
-          int k = pageList->get_rear_page()->key;
+          U k = pageList->get_rear_page()->key;
           pageMap.erase(k);
           pageList->remove_rear_page();
           size--;
         }
-        Node *page = pageList->add_page_to_head(key, value);
+        Node<U,V> *page = pageList->add_page_to_head(key, value);
         size++;
         pageMap[key] = page;
     }
 
     ~LRUCache() {
-      map<int, Node*>::iterator i1;
+      typename map<U, Node<U,V>*>::iterator i1;
       for(i1=pageMap.begin();i1!=pageMap.end();i1++) {
           delete i1->second;
       }
@@ -129,7 +134,8 @@ class LRUCache{
 
 int main()
 {
-  LRUCache cache(2);
+  cout<<"Integer"<<endl;
+  LRUCache<int,int> cache(2,-1);
   cache.put(2,6);
   cout << cache.get(2) << endl;
   cout << cache.get(1) << endl;
@@ -140,5 +146,17 @@ int main()
   cache.put(8,9);
   cout << cache.get(1) << endl;
   cout << cache.get(8) << endl;
+  cout<<"String"<<endl;
+  LRUCache<string,string> cache2(2,"-1");
+  cache2.put("b","f");
+  cout << cache2.get("b") << endl;
+  cout << cache2.get("a") << endl;
+  cache2.put("a","a");
+  cache2.put("a","c");
+  cout << cache2.get("a") << endl;
+  cout << cache2.get("b") << endl;
+  cache2.put("h","i");
+  cout << cache2.get("a") << endl;
+  cout << cache2.get("h") << endl;
 
 }
