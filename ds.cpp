@@ -2,10 +2,15 @@
 #include <map>
 using namespace std;
 class Node {
-  public:
-  int key, value;
-  Node *prev, *next;
-  Node(int k, int v): key(k), value(v), prev(NULL), next(NULL) {}
+    public:
+    int key, value;
+    Node *prev, *next;
+    Node(int k, int v)
+    {
+        key=k;
+        value=v;
+        prev=next=nullptr;
+    }
 };
 
 class DoublyLinkedList {
@@ -16,7 +21,9 @@ class DoublyLinkedList {
   }
 
   public:
-  DoublyLinkedList(): front(NULL), rear(NULL) {}
+  DoublyLinkedList(){
+    front=rear=nullptr;
+  }
 
   Node* add_page_to_head(int key, int value) {
       Node *page = new Node(key, value);
@@ -37,7 +44,7 @@ class DoublyLinkedList {
       }
       if(page == rear) {
           rear = rear->prev;
-          rear->next = NULL;
+          rear->next = nullptr;
       }
       else {
           page->prev->next = page->next;
@@ -45,7 +52,7 @@ class DoublyLinkedList {
       }
 
       page->next = front;
-      page->prev = NULL;
+      page->prev = nullptr;
       front->prev = page;
       front = page;
   }
@@ -56,12 +63,12 @@ class DoublyLinkedList {
       }
       if(front == rear) {
           delete rear;
-          front = rear = NULL;
+          front = rear = nullptr;
       }
       else {
           Node *temp = rear;
           rear = rear->prev;
-          rear->next = NULL;
+          rear->next = nullptr;
           delete temp;
       }
   }
@@ -77,8 +84,8 @@ class LRUCache{
   map<int, Node*> pageMap;
 
   public:
-    LRUCache(int capacity) {
-      this->capacity = capacity;
+    LRUCache(int c) {
+      this->capacity = c;
       size = 0;
         pageList = new DoublyLinkedList();
         pageMap = map<int, Node*>();
@@ -120,7 +127,8 @@ class LRUCache{
     }
 };
 
-int main() {
+int main()
+{
   LRUCache cache(2);
   cache.put(2,6);
   cout << cache.get(2) << endl;
